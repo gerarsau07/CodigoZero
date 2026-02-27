@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
@@ -46,6 +49,16 @@ public class MainActivity extends AppCompatActivity {
 
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
+        });
+
+
+        Button btnIniciar = findViewById(R.id.btnIniciar);
+        btnIniciar.setOnClickListener(view -> {
+            Toast.makeText(MainActivity.this, "¡Iniciando Nivel 1: El Código Base!", Toast.LENGTH_SHORT).show();
+
+            // Cuando creemos la siguiente pantalla (GameActivity), descomenta esto:
+            // Intent intent = new Intent(MainActivity.this, GameActivity.class);
+            // startActivity(intent);
         });
     }
 }
