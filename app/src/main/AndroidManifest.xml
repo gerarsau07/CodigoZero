@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CodigoZero">
         <activity
+            android:name=".Seleccion"
+            android:exported="false" />
+        <activity
             android:name=".NivelUnoActivity"
             android:exported="false" />
         <activity
