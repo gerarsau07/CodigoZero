@@ -55,7 +55,7 @@ public class GameView extends SurfaceView implements Runnable {
         Bitmap originalBuho = BitmapFactory.decodeResource(getResources(), R.drawable.buho_nave);
 
         // Queremos que el búho mida 100 píxeles de ancho (como el cubo original)
-        float maxTamanoNave = 200f;
+        float maxTamanoNave = 150f;
 
         // Calculamos la proporción para que no se deforme
         float aspectRatio = (float) originalBuho.getHeight() / originalBuho.getWidth();
@@ -72,14 +72,14 @@ public class GameView extends SurfaceView implements Runnable {
         listaImagenesCarreras = new ArrayList<>();
 
         // Define el tamaño objetivo de los obstáculos (ej. 80 píxeles de ancho)
-        float targetWidthObstaculo = 300f;
+        float targetWidthObstaculo = 400f;
 
         // Lista de drawables.
         int[] drawableCarrerasIds = {
                 R.drawable.mecatronica,
                 R.drawable.biotecnologia,
                 R.drawable.automotriz,
-                R.drawable.ti,
+                R.drawable.ti2,
                 R.drawable.industrial,
                 R.drawable.financiera,
                 //R.drawable.electronica
