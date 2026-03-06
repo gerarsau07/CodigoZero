@@ -24,7 +24,7 @@ public class Seleccion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // --- MODO INMERSIVO (Pantalla completa) ---
+        // --- MODO INMERSIVO (Pantalla completa sin barra superior) ---
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         if (getSupportActionBar() != null) {
@@ -43,6 +43,7 @@ public class Seleccion extends AppCompatActivity {
         String[] opciones = {"Tecnologías de la Información", "Ingeniería Financiera", "Biotecnología"};
 
         // Creamos un adaptador para pasar los textos al Spinner
+        // Usamos un layout simple por defecto de Android para los items desplegables
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, opciones);
         spinnerCarreras.setAdapter(adapter);
 
@@ -52,11 +53,11 @@ public class Seleccion extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // position 0 = TI, 1 = Financiera, 2 = Biotecnología
                 if (position == 0) {
-                    imgAvatarGrande.setImageResource(R.drawable.avatarTI);
+                    imgAvatarGrande.setImageResource(R.drawable.avatar_ti);
                 } else if (position == 1) {
-                    imgAvatarGrande.setImageResource(R.drawable.avatarFinaciera); // Cuidado aquí: avatarFinaciera o avatarFinanciera según lo guardaste
+                    imgAvatarGrande.setImageResource(R.drawable.avatar_financiera);
                 } else if (position == 2) {
-                    imgAvatarGrande.setImageResource(R.drawable.avatarBio);
+                    imgAvatarGrande.setImageResource(R.drawable.avatar_bio);
                 }
             }
 
