@@ -145,7 +145,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             paintTexto.setColor(Color.parseColor("#00FF41"));
             paintTexto.setTextSize(50);
-            canvas.drawText("NIVEL 1", 50, 100, paintTexto);
+            canvas.drawText("NIVEL 0", 50, 100, paintTexto);
 
             paintTexto.setColor(Color.WHITE);
             paintTexto.setTextSize(40);
