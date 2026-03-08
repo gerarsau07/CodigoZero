@@ -4,12 +4,13 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-public class NivelUnoActivity extends AppCompatActivity {
+public class NivelZeroActivity extends AppCompatActivity {
 
-    // CAMBIO: Ahora usamos GameView2 (El motor exclusivo del Nivel 1)
-    private GameView2 gameView2;
+    // Instanciamos el motor original para el Nivel 0
+    private GameView gameView;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -24,27 +25,18 @@ public class NivelUnoActivity extends AppCompatActivity {
         }
 
         // 1. Cargamos el archivo XML
-        setContentView(R.layout.activity_nivel_uno);
+        setContentView(R.layout.activity_nivel_zero);
 
-        // 2. Buscamos el GameView2 dentro del XML
-        gameView2 = findViewById(R.id.gameView2);
-
-        // --- 3. RECIBIMOS LA CARRERA DESDE LA PANTALLA DE SELECCIÓN ---
-        // Si por alguna razón no llega el dato, el valor por defecto será 0 (T.I.)
-        int carreraElegida = getIntent().getIntExtra("CARRERA_SELECCIONADA", 0);
-
-        // --- 4. LE MANDAMOS LA CARRERA AL MOTOR GRÁFICO PARA CAMBIAR EL AVATAR ---
-        if (gameView2 != null) {
-            gameView2.setSkinYCarrera(carreraElegida);
-        }
+        // 2. Buscamos el GameView dentro del XML
+        gameView = findViewById(R.id.gameViewNivel0);
     }
 
     // Gestionamos las pausas para que el hilo del juego se detenga si se minimiza la app
     @Override
     protected void onPause() {
         super.onPause();
-        if (gameView2 != null) {
-            gameView2.pausar();
+        if (gameView != null) {
+            gameView.pausar();
         }
     }
 
@@ -52,8 +44,8 @@ public class NivelUnoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (gameView2 != null) {
-            gameView2.reanudar();
+        if (gameView != null) {
+            gameView.reanudar();
         }
     }
 }

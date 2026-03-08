@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CodigoZero">
         <activity
+            android:name=".NivelZeroActivity"
+            android:exported="false" />
+        <activity
             android:name=".ResumenActivity"
             android:exported="false" />
         <activity
