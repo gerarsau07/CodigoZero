@@ -1,5 +1,6 @@
-package com.example.codigozero; // <-- REVISA QUE ESTE SEA TU PAQUETE
+package com.example.codigozero;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -9,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,7 +43,6 @@ public class Seleccion extends AppCompatActivity {
         String[] opciones = {"Tecnologías de la Información", "Ingeniería Financiera", "Biotecnología"};
 
         // Creamos un adaptador para pasar los textos al Spinner
-        // Usamos un layout simple por defecto de Android para los items desplegables
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, opciones);
         spinnerCarreras.setAdapter(adapter);
 
@@ -67,23 +66,24 @@ public class Seleccion extends AppCompatActivity {
             }
         });
 
-        // --- 3. EVENTO: BOTÓN DE "INICIAR PROTOCOLO" ---
+        // --- 3. EVENTO: BOTÓN DE "INICIAR PROTOCOLO" PARA IR AL JUEGO ---
         btnIniciarRuta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Averiguamos cuál opción está seleccionada actualmente en el Spinner
+                // Obtenemos qué número de carrera está seleccionado (0, 1 o 2)
                 int seleccionActual = spinnerCarreras.getSelectedItemPosition();
 
-                if (seleccionActual == 0) {
-                    Toast.makeText(Seleccion.this, "Iniciando protocolo de T.I. e Innovación...", Toast.LENGTH_SHORT).show();
-                    // Aquí irá el Intent al juego de T.I.
-                } else if (seleccionActual == 1) {
-                    Toast.makeText(Seleccion.this, "Cargando algoritmos Financieros...", Toast.LENGTH_SHORT).show();
-                    // Aquí irá el Intent al juego de Financiera
-                } else if (seleccionActual == 2) {
-                    Toast.makeText(Seleccion.this, "Analizando secuencias de Biotecnología...", Toast.LENGTH_SHORT).show();
-                    // Aquí irá el Intent al juego de Biotecnología
-                }
+                // Preparamos el viaje hacia la pantalla del Nivel 1
+                Intent intent = new Intent(Seleccion.this, NivelUnoActivity.class);
+
+                // "Empacamos" la carrera elegida para que el Nivel 1 sepa qué skin usar
+                intent.putExtra("CARRERA_SELECCIONADA", seleccionActual);
+
+                // Iniciamos el nivel
+                startActivity(intent);
+
+                // Cerramos esta pantalla para que el jugador no pueda regresar aquí con el botón de "Atrás" del celular
+                finish();
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.example.codigozero; // <-- REVISA QUE ESTE SEA TU PAQUETE
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,7 +13,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.app.Activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +25,22 @@ public class GameView extends SurfaceView implements Runnable {
 
     private Paint paintTexto;
 
-    // Variables de nuestra nave (El Búho)
+    // Variables de nuestra nave (El Búho / Avatar)
     private float naveX;
     private float naveY;
     private Bitmap imagenBuho;
 
+    // NUEVO: Variable para saber qué carrera estamos jugando
+    private int carreraActual = 0;
+
+    // Listas para los obstáculos
     private List<Bitmap> listaImagenesCarreras;
     private List<Obstaculo> listaObstaculos;
 
     // Variables de Puntos y Vidas
     private int puntos = 0;
     private int vidas = 3;
-    private boolean juegoGanado = false; // NUEVO: Bandera para saber si ya ganamos
+    private boolean juegoGanado = false;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -44,18 +48,13 @@ public class GameView extends SurfaceView implements Runnable {
         paintTexto = new Paint();
         listaObstaculos = new ArrayList<>();
 
-        // --- CARGAMOS LA IMAGEN DEL BÚHO ---
-        Bitmap originalBuho = BitmapFactory.decodeResource(getResources(), R.drawable.buho_nave);
-        float maxTamanoNave = 150f;
-        float aspectRatio = (float) originalBuho.getHeight() / originalBuho.getWidth();
-        int nuevoAncho = (int) maxTamanoNave;
-        int nuevoAlto = (int) (maxTamanoNave * aspectRatio);
-        imagenBuho = Bitmap.createScaledBitmap(originalBuho, nuevoAncho, nuevoAlto, false);
-        originalBuho.recycle();
+        // Cargamos una skin por defecto (luego se cambiará automáticamente con setSkinYCarrera)
+        Bitmap originalBuho = BitmapFactory.decodeResource(getResources(), R.drawable.avatar_ti);
+        escalarNave(originalBuho);
 
-        // --- PRE-CARGAMOS LAS IMÁGENES DE CARRERAS ---
+        // --- PRE-CARGAMOS LAS IMÁGENES DE LOS OBSTÁCULOS (CARRERAS) ---
         listaImagenesCarreras = new ArrayList<>();
-        float targetWidthObstaculo = 400f;
+        float targetWidthObstaculo = 400f; // Tamaño de los obstáculos que caen
         int[] drawableCarrerasIds = {
                 R.drawable.mecatronica,
                 R.drawable.biotecnologia,
@@ -77,10 +76,39 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        // --- POSICIÓN INICIAL ---
+        // --- POSICIÓN INICIAL DE TU AVATAR ---
         naveX = 400;
         naveY = 1000;
     }
+
+    // =========================================================================
+    // NUEVO MÉTODO: Recibe la carrera desde NivelUnoActivity y cambia la imagen
+    // =========================================================================
+    public void setSkinYCarrera(int carreraElegida) {
+        this.carreraActual = carreraElegida;
+        int recursoImagen = R.drawable.avatar_ti; // Skin por defecto (TI)
+
+        if (carreraActual == 1) {
+            recursoImagen = R.drawable.avatar_financiera;
+        } else if (carreraActual == 2) {
+            recursoImagen = R.drawable.avatar_bio;
+        }
+
+        // Cargamos y escalamos la nueva skin elegida
+        Bitmap nuevaSkin = BitmapFactory.decodeResource(getResources(), recursoImagen);
+        escalarNave(nuevaSkin);
+    }
+
+    // Método auxiliar para no repetir código al escalar la nave
+    private void escalarNave(Bitmap original) {
+        float maxTamanoNave = 150f;
+        float aspectRatio = (float) original.getHeight() / original.getWidth();
+        int nuevoAncho = (int) maxTamanoNave;
+        int nuevoAlto = (int) (maxTamanoNave * aspectRatio);
+        imagenBuho = Bitmap.createScaledBitmap(original, nuevoAncho, nuevoAlto, false);
+        original.recycle();
+    }
+    // =========================================================================
 
     @Override
     public void run() {
@@ -92,7 +120,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void actualizar() {
-        // NUEVO: Si no tenemos vidas o ya ganamos, el juego se detiene
+        // Si perdimos o ganamos, el juego se detiene
         if (vidas <= 0 || juegoGanado) {
             return;
         }
@@ -122,13 +150,13 @@ public class GameView extends SurfaceView implements Runnable {
                 continue;
             }
 
-            // 3. Si el obstáculo sale por abajo, ganamos puntos
+            // 3. Si el obstáculo sale por abajo sin tocarnos, ganamos puntos
             if (obs.y > getHeight()) {
                 puntos += 10;
                 listaObstaculos.remove(i);
                 i--;
 
-                // NUEVO: COMPROBAMOS SI LLEGAMOS A 200 PUNTOS
+                // COMPROBAMOS SI LLEGAMOS A 200 PUNTOS (VICTORIA)
                 if (puntos >= 200) {
                     juegoGanado = true;
                     avanzarASiguientePantalla();
@@ -141,8 +169,10 @@ public class GameView extends SurfaceView implements Runnable {
         if (holder.getSurface().isValid()) {
             Canvas canvas = holder.lockCanvas();
 
+            // Fondo oscuro
             canvas.drawColor(Color.parseColor("#0A0A12"));
 
+            // Textos del HUD
             paintTexto.setColor(Color.parseColor("#00FF41"));
             paintTexto.setTextSize(50);
             canvas.drawText("NIVEL 1", 50, 100, paintTexto);
@@ -159,11 +189,11 @@ public class GameView extends SurfaceView implements Runnable {
                 paintTexto.setTextSize(100);
                 canvas.drawText("MISIÓN FALLIDA", canvas.getWidth()/2f - 350, canvas.getHeight()/2f, paintTexto);
             } else if (juegoGanado) {
-                // NUEVO: Mensaje de victoria rápido antes de cambiar de pantalla
                 paintTexto.setColor(Color.parseColor("#00FF41"));
                 paintTexto.setTextSize(90);
                 canvas.drawText("¡SISTEMA HACKEADO!", canvas.getWidth()/2f - 400, canvas.getHeight()/2f, paintTexto);
             } else {
+                // Dibujamos al avatar y a los obstáculos
                 canvas.drawBitmap(imagenBuho, naveX, naveY, null);
                 for (Obstaculo obs : listaObstaculos) {
                     canvas.drawBitmap(obs.imagen, obs.x, obs.y, null);
@@ -212,18 +242,23 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    // NUEVO: Método para cambiar de Activity de forma segura desde el hilo secundario
+    // =========================================================================
+    // VIAJE A LA PANTALLA DE LOGROS
+    // =========================================================================
     private void avanzarASiguientePantalla() {
         estaJugando = false; // Detenemos el motor gráfico
 
-        // Usamos post() para enviar la acción al hilo principal de la interfaz
         post(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(getContext(), Seleccion.class);
+                // Viajamos a la pantalla de ResumenActivity
+                Intent intent = new Intent(getContext(), ResumenActivity.class);
+
+                // MANDAMOS LA CARRERA ACTUAL para que la pantalla de resumen sepa qué materias mostrar
+                intent.putExtra("CARRERA_SELECCIONADA", carreraActual);
+
                 getContext().startActivity(intent);
 
-                // Cerramos este nivel para que el botón "Atrás" del celular no regrese al juego
                 if (getContext() instanceof Activity) {
                     ((Activity) getContext()).finish();
                 }
