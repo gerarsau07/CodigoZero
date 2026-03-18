@@ -1,4 +1,4 @@
-package com.example.codigozero; // <-- REVISA QUE ESTE SEA TU PAQUETE
+package com.example.codigozero;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,21 +22,16 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread hiloJuego;
     private boolean estaJugando;
     private SurfaceHolder holder;
-
     private Paint paintTexto;
-
-    // Variables de nuestra nave (El Búho)
     private float naveX;
     private float naveY;
     private Bitmap imagenBuho;
 
     private List<Bitmap> listaImagenesCarreras;
     private List<Obstaculo> listaObstaculos;
-
-    // Variables de Puntos y Vidas
     private int puntos = 0;
     private int vidas = 3;
-    private boolean juegoGanado = false; // NUEVO: Bandera para saber si ya ganamos
+    private boolean juegoGanado = false;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);

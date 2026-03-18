@@ -40,4 +40,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    // Librería para las cartas deslizables tipo Tinder
+    implementation("com.github.yuyakaido:CardStackView:v2.3.4")
 }

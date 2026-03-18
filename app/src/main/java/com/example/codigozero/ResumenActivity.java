@@ -1,5 +1,6 @@
 package com.example.codigozero; // <-- REVISA QUE ESTE SEA TU PAQUETE
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -77,8 +78,11 @@ public class ResumenActivity extends AppCompatActivity {
         btnAvanzarNivel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Como aún no construimos el Nivel 2, pondremos un mensaje temporal
-                Toast.makeText(ResumenActivity.this, "Cargando Nivel 2... ¡Próximamente!", Toast.LENGTH_SHORT).show();
+                // Viajamos al Nivel 2 llevando la carrera seleccionada
+                Intent intent = new Intent(ResumenActivity.this, NivelDosActivity.class);
+                intent.putExtra("CARRERA_SELECCIONADA", carreraElegida);
+                startActivity(intent);
+                finish(); // Cerramos el resumen
             }
         });
     }

@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CodigoZero">
         <activity
+            android:name=".ResumenDosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NivelDosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ResultadoVocacionalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TestVocacionalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuPrincipalActivity"
+            android:exported="false" />
+        <activity
             android:name=".NivelZeroActivity"
             android:exported="false" />
         <activity

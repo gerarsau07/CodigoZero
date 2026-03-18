@@ -43,7 +43,7 @@ public class RegistroActivity extends AppCompatActivity {
                     Toast.makeText(RegistroActivity.this, "Faltan datos obligatorios.", Toast.LENGTH_SHORT).show();
                 } else {
                     // Viajamos al Nivel Uno
-                    Intent intent = new Intent(RegistroActivity.this, NivelZeroActivity.class);
+                    Intent intent = new Intent(RegistroActivity.this, MenuPrincipalActivity.class);
                     startActivity(intent);
                     finish(); // Cierra el registro
                 }
