@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CodigoZero">
         <activity
+            android:name=".ResumenTresActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NivelTresActivity"
+            android:exported="false" />
+        <activity
             android:name=".ResumenDosActivity"
             android:exported="false" />
         <activity

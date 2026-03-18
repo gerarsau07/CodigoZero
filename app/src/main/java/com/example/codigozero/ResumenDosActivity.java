@@ -33,9 +33,12 @@ public class ResumenDosActivity extends AppCompatActivity {
             tvTituloTSU.setText("ERES T.S.U. EN BIOTECNOLOGÍA");
         }
 
+        btnVolverMenuTSU.setText("INICIAR RECTA FINAL (NIVEL 3)"); // Opcional: Cambia el texto del botón si quieres
+
         btnVolverMenuTSU.setOnClickListener(v -> {
-            Intent intent = new Intent(ResumenDosActivity.this, MenuPrincipalActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            // Ahora viajamos al Nivel 3 en lugar del Menú
+            Intent intent = new Intent(ResumenDosActivity.this, NivelTresActivity.class);
+            intent.putExtra("CARRERA_SELECCIONADA", carreraElegida);
             startActivity(intent);
             finish();
         });
